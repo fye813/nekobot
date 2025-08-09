@@ -1,3 +1,4 @@
+import os
 import discord, datetime
 from discord.ext import commands, tasks
 from config import DISCORD_TOKEN, CHANNEL_ID
@@ -17,6 +18,13 @@ async def on_ready():
     # デバッグ用：起動したことをチャンネルに通知
     channel = await bot.fetch_channel(CHANNEL_ID)
     await channel.send(f"✅ Nekobot が起動しました ({datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')})")
+
+    # --- デバッグ: 起動時に通常チェックリストを投稿 ---
+    # .env に BOOT_POST=1 を入れると有効（未設定は1扱い）
+    if os.getenv("BOOT_POST", "1") == "1":
+        await channel.send("🧪 デバッグ: 起動時チェックリストを投稿します（本番は無効化推奨）", view=CheckListView())
+        print("[DEBUG] 起動時に通常チェックリストを投稿しました")
+    # -----------------------------------------------
 
     # スケジュール開始
     schedule_task.start()
