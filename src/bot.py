@@ -19,10 +19,9 @@ async def on_ready():
     channel = await bot.fetch_channel(CHANNEL_ID)
     await channel.send(f"✅ Nekobot が起動しました ({datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')})")
 
-    # --- デバッグ: 起動時に通常チェックリストを投稿 ---
-    # .env に BOOT_POST=1 を入れると有効（未設定は1扱い）
+    # ---起動時に通常チェックリストを投稿 -------------
     if os.getenv("BOOT_POST", "1") == "1":
-        await channel.send("🧪 デバッグ: 起動時チェックリストを投稿します（本番は無効化推奨）", view=CheckListView())
+        await channel.send(view=CheckListView())
         print("[DEBUG] 起動時に通常チェックリストを投稿しました")
     # -----------------------------------------------
 
